@@ -1,9 +1,8 @@
 import tkinter as tk
 import threading
-import sqlite3
-import requests
 import json
 from tkinter import ttk
+from ucr_api import *
 
 font = ("Helvetica", 20)
 
@@ -28,7 +27,7 @@ class InterfazMain(tk.Tk):
             print("Has seleccionado:", combobox.get())
 
         # Crear el Combobox
-        opciones = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"]
+        opciones =  self.get_stop_names()
         combobox = ttk.Combobox(self, values=opciones, state="readonly")
         combobox.pack(pady=20)
 
@@ -74,8 +73,10 @@ class InterfazMain(tk.Tk):
 
         self.parada_pass_frame = tk.Frame(self.login_frame, bg="lightblue")
         self.parada_pass_frame.pack(pady=20)
-
-        
+    def get_stop_names(self):
+        data = get_data("gtfs/schedule/stops/")
+        paradas = [p['stop_name'] for p in data]
+        return paradas
     def on_closing(self):
         """Finaliza el programa correctamente.
         """
