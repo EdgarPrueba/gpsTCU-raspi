@@ -60,14 +60,14 @@ def enviar_api(latitud_decimal, longitud_decimal):
     """
     # Datos que se enviarán a la API
     data = {
-        "journey_id": 698453,
+        "journey": 698453,
         "timestamp": 1710067980,
         "latitude": latitud_decimal,
         "longitude": longitud_decimal,
         "altitude": 1234.5,
-        "speed": 12.5,
         "bearing": 135,
-        "odometer": 12345.6
+        "odometer": 12345.6,
+        "speed": 12.5,
     }
     post_data('position', data)
 
