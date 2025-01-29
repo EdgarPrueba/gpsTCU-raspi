@@ -246,7 +246,7 @@ class InterfazMain(tk.Tk, funcRegistro):
             }
             try:
                 response = requests.post(
-                    "https://realtime.bucr.digital/api/operator",
+                    "https://databus.bucr.digital/api/operator/",
                     json=data)
                 print(response.status_code)
                 if response.status_code == 200:
