@@ -36,7 +36,6 @@ class InterfazMain(tk.Tk, funcRegistro):
 
         self.configure(bg="lightblue")  # Fondo de color azul claro
 
-
         # Variables internas de nombre de usuario/contraseña
         self.username = tk.StringVar()
         self.password = tk.StringVar()
@@ -74,9 +73,11 @@ class InterfazMain(tk.Tk, funcRegistro):
         self.inic_reg_frame = tk.Frame(self.login_frame, bg="lightblue")
         self.inic_reg_frame.pack(pady=5)
 
-        tk.Button(self.inic_reg_frame, text="INICIAR", bg="lightgreen", fg="black", font=font,
+        tk.Button(self.inic_reg_frame, text="INICIAR", bg="lightgreen",
+                  fg="black", font=font,
                   command=self.login).pack(side=tk.LEFT, padx=80)
-        tk.Button(self.inic_reg_frame, text="REGISTRARSE", bg="lightgreen", fg="black", font=font,
+        tk.Button(self.inic_reg_frame, text="REGISTRARSE", bg="lightgreen",
+                  fg="black", font=font,
                   command=self.show_registration).pack(side=tk.LEFT, padx=80)
 
         # Label para mostrar mensajes de estado de inicio
@@ -93,17 +94,20 @@ class InterfazMain(tk.Tk, funcRegistro):
         self.trip_frame = tk.Frame(self, bg="lightblue")
 
         # Se hacen botones que cambian de color
-        self.botonIniciar = tk.Button(self.trip_frame, text="Iniciar Viaje", bg="lightgreen", fg="black",
+        self.botonIniciar = tk.Button(self.trip_frame, text="Iniciar Viaje",
+                                      bg="lightgreen", fg="black",
                                       font=font, command=self.start_gps,
                                       width=20, height=3)
         self.botonIniciar.pack(pady=20)
 
-        self.botonFinalizar = tk.Button(self.trip_frame, text="Parar Viaje", bg="yellow", fg="black",
+        self.botonFinalizar = tk.Button(self.trip_frame, text="Parar Viaje",
+                                        bg="yellow", fg="black",
                                         font=font, command=self.stop_gps,
                                         width=20, height=3)
         self.botonFinalizar.pack(pady=20)
 
-        self.botonLogout = tk.Button(self.trip_frame, text="Cerrar sesión", bg="red", fg="black",
+        self.botonLogout = tk.Button(self.trip_frame, text="Cerrar sesión",
+                                     bg="red", fg="black",
                                      font=font, command=self.logout,
                                      width=20, height=3)
         self.botonLogout.pack(pady=20)
