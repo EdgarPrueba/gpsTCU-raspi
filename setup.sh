@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Editar esta variable según sea interfaz del bus o de parada.
-INTERFAZ="interfaz.py"
+# Editar esta variable según sea interfaz del bus, de parada u otro.
+INTERFAZ="escogerInterfaz.py"
 
 # Se usa el directorio donde se encuentra el script (gpsTCU)
 # como el directorio base.
