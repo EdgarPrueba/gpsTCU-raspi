@@ -1,2 +1,4 @@
 requests
 pyserial
+celery[redis]
+sqlalchemy
