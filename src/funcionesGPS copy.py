@@ -83,11 +83,6 @@ def manejarGPS(stop_event):
     port = '/dev/serial0'               # Se define puerto
     baudrate = 9600                     # Frecuencia/velocidad de trabajo
     # Archivo de texto donde se guardarán los datos con append
-    archivo_txt = 'gps_data.txt'
-    archivo_csv = 'datos_gps.csv'
-
-    # Quitar el comentario para cuando se tenga el
-    # api_url = 'https://realtime.bucr.digital/api/position'
 
     # Se abre puerto serial
     if not windows:
@@ -96,24 +91,13 @@ def manejarGPS(stop_event):
     save_count = 1
 
     try:
-        print(
-            f"Guardando datos en {archivo_csv} y "
-            f"{archivo_txt}. Presione CTRL+C para salir.")
         while not stop_event.is_set():
             if windows:
                 latitud = 1
                 longitud = 2
                 print("Proceso corriendo...")
                 time.sleep(0.5)
-                with open(archivo_txt, 'a') as txt_file:
-                    # Guarda la línea en el archivo de texto
-                    txt_file.write(
-                        f"{save_count}: Latitud: {latitud},"
-                        f" Longitud: {longitud} \n")
-
-                guardar_csv(archivo_csv, latitud, longitud)
-                guardar_txt(archivo_txt, latitud, longitud,
-                            save_count)
+                
                 # Incrementa el contador de guardados
                 save_count += 1
             else:
@@ -134,15 +118,6 @@ def manejarGPS(stop_event):
                                 latxlon[0], latxlon[1], latxlon[2], latxlon[3])
                             print(f"Latitud: {latitud} y Longitud: {longitud}")
 
-                            with open(archivo_txt, 'a') as txt_file:
-                                # Guarda la línea en el archivo de texto
-                                txt_file.write(
-                                    f"{save_count}: Latitud: {latitud},"
-                                    f" Longitud: {longitud} \n")
-
-                            guardar_csv(archivo_csv, latitud, longitud)
-                            guardar_txt(archivo_txt, latitud, longitud,
-                                        save_count)
                             # Incrementa el contador de guardados
                             save_count += 1
 

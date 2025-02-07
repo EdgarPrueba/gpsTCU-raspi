@@ -6,6 +6,7 @@ from funcionesGPS import manejarGPS
 from registro import InterfazRegistro, funcRegistro
 import sqlite3
 import requests
+from test_position import *
 
 # Fuente determinada del sistema
 font = ("Helvetica", 12)

@@ -1,7 +1,7 @@
 from ucr_api import *
 from math import sqrt
 #  {
-#         "url": "https://databus.bucr.digital/api/gtfs/schedule/stops/1/?format=api",
+#         "url": "https://databus.bucr.digital/api/stops/1/?format=api",
 #         "feed": "1",
 #         "stop_id": "bUCR_0_01",
 #         "stop_code": "",
@@ -19,13 +19,13 @@ from math import sqrt
 #         "platform_cod": ""
 #     }
 def get_stops():
-    data = get_data("gtfs/schedule/stops/")
+    data = get_data("stops/")
     # print(data)
     for p in data:
         print(f"{p['stop_id']} - {p['stop_name']} - {p['stop_desc']} - {p['stop_lat']} - {p['stop_lon']} - {p['zone_id']} - {p['wheelchair_boarding']}")
 
 def get_shapes(filter=None):
-    data = get_data("gtfs/schedule/shapes/")
+    data = get_data("shapes/")
     # print(data)
     for p in data:
         if(filter is not None):
@@ -36,7 +36,7 @@ def get_shapes(filter=None):
 get_shapes("hacia_artes")
 
 def closer_point(filter, lat = 9.934649, lon = -84.045620):
-    data = get_data("gtfs/schedule/shapes/")
+    data = get_data("shapes/")
     # print(data)
     min_dist = 9999999999
     min_pt = 0

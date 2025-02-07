@@ -43,7 +43,7 @@ def get_stop_times(filter=None):
         else:
             print(f"{p['trip_id']} - {p['arrival_time']} - {p['departure_time']} - {p['stop_id']} - {p['stop_sequence']} - {p['pickup_type']} - {p['drop_off_type']} - {p['shape_dist_traveled']}")
 
-# get_stop_times("hacia_artes")
+get_stop_times()
 def get_trip(filter=None):
     data = get_data("gtfs/schedule/trips/")
     # print(data)
@@ -54,4 +54,4 @@ def get_trip(filter=None):
         else:
             print(f"{p['route_id']} - {p['service_id']} - {p['trip_id']} - {p['trip_headsign']} - {p['direction_id']} - {p['block_id']} - {p['shape_id']}")
 # get_trip("hacia_artes_entresemana_11:15")
-get_stop_times()
+# get_stop_times()
