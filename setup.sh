@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Editar esta variable según sea interfaz del bus, de parada u otro.
-INTERFAZ="escogerInterfaz.py"
+INTERFAZ="interfaz.py"
 
 # Se usa el directorio donde se encuentra el script (gpsTCU)
 # como el directorio base.
@@ -17,6 +17,7 @@ mkdir -p "$AUTO_PATH"
 
 # Se crea enviroment virtual si no existe
 if [ ! -d "$VENV_DIR" ]; then
+    sudo apt install python3.11-venv
     python3 -m venv "$VENV_DIR"
     source "$VENV_DIR/bin/activate"
     pip install --upgrade pip
