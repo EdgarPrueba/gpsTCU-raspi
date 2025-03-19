@@ -6,7 +6,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <style>
-        #map { height: 500px; width: 100%; }
+        #map { height: 600px; width: 100%; }
     </style>
 </head>
 <body>
@@ -14,7 +14,20 @@
     <div id="map"></div>
 
     <script>
-        var map = L.map('map').setView([40.758896, -73.985130], 15);
+        var map = L.map('map', {
+            center: [9.9368, -84.0517], 
+            zoom: 15,  
+            zoomControl: true,  // Enable zoom controls
+            scrollWheelZoom: true, // Allow zooming with the scroll wheel
+            doubleClickZoom: true, // Allow zooming on double-click
+            touchZoom: true,  // Enable pinch-to-zoom on mobile
+            dragging: true,  // Allow panning
+            maxBounds: [ // Restrict panning area
+                [9.9340, -84.0550], // Southwest corner (lat, lon)
+                [9.9395, -84.0485]  // Northeast corner (lat, lon)
+            ],
+            maxBoundsViscosity: 1.0 // Prevent moving outside bounds
+        });
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         var marker = L.marker([40.758896, -73.985130]).addTo(map);
@@ -24,7 +37,7 @@
         socket.on('gps_update', function(data) {
             var newPos = [data.lat, data.lon];
             marker.setLatLng(newPos);
-            map.setView(newPos, 15);
+            // map.setView(newPos, map.getZoom());
             route.addLatLng(newPos);
         });
     </script>
