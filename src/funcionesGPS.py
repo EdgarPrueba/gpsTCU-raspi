@@ -98,7 +98,7 @@ def enviar_api(latitud_decimal, longitud_decimal):
 
     try:
         # Enviar datos a la API
-        response = requests.post(api_url, json=data)
+        response = requests.put(api_url, json=data)
         if response.status_code == 200:
             print(
                 f"Datos enviados correctamente a la API. Latitud: "
