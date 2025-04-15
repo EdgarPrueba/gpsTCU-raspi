@@ -3,11 +3,11 @@ from flask_socketio import SocketIO
 import csv
 import time
 
-template_folder = 'resources/templates'
 template_name = 'map.html'
+
 datos_path = 'tests/map/datos_gps.csv'
 
-app = Flask(__name__, template_folder=template_folder)
+app = Flask(__name__, template_folder='../../resources/templates')
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
