@@ -7,6 +7,8 @@ import requests
 # Fuente determinada del sistema
 font = ("Helvetica", 12)
 path = 'src/operadores.db'
+# Cambiar posteriormente
+api_url = 'https://realtime.bucr.digital/api/position'
 
 
 class InterfazMain(tk.Tk):
@@ -39,29 +41,7 @@ class InterfazMain(tk.Tk):
         self.gps_thread = None
         self.stop_event = threading.Event()
 
-        self.create_database()  # Crear la base de datos si no existe
         self.create_widgets()
-
-    def create_database(self):
-        """Crea la base de datos y la tabla de operadores si no existen.
-        """
-        conn = sqlite3.connect(path)
-        cursor = conn.cursor()
-
-        # Crear la tabla de operadores si no existe
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS operadores (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT NOT NULL,
-                password TEXT NOT NULL,
-                name TEXT,
-                phone TEXT,
-                email TEXT
-            )
-        ''')
-
-        conn.commit()
-        conn.close()
 
     def create_widgets(self):
         """Crea los objetos de las ventanas de inicio de sesión y
@@ -264,7 +244,7 @@ class InterfazMain(tk.Tk):
             }
             try:
                 response = requests.post(
-                    "https://databus.bucr.digital/api/operator/",
+                    api_url, headers={"Content-Type": "application/json"},
                     json=data)
                 print(response.status_code)
                 if response.status_code == 200:
