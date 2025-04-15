@@ -4,11 +4,14 @@ from funcionesGPS import manejarGPS
 import sqlite3
 import requests
 
-# Fuente determinada del sistema
-font = ("Helvetica", 12)
-path = 'src/operadores.db'
-# Cambiar posteriormente
+# Dirección de la base de datos local
+path = 'resources/database/operadores.db'
+
+# URL de la API para enviar datos de posición
 api_url = 'https://realtime.bucr.digital/api/position'
+
+# Configuración de la fuente para los botones y etiquetas
+font = ("Helvetica", 12)
 
 
 class InterfazMain(tk.Tk):

@@ -2,6 +2,7 @@ import serial
 import requests
 import csv
 
+# URL de la API
 api_url = "https://api-tcu-ucr-default-rtdb.firebaseio.com/location.json"
 
 

@@ -1,6 +1,13 @@
+# Archivo de ejecución de interfaz en Raspberry Pi
+src/launchInterfaz.sh
+
+# Cache y archivos temporales de python
 __pycache__/
 *.pyc
-venv/
-src/launchInterfaz.sh
+
+# Archivos de configuración de celery
 *celerybeat-schedule.*
+
+# Ambiente virtual
+venv/
 env/

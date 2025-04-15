@@ -2,9 +2,11 @@ import tkinter as tk
 import sqlite3
 import re
 
-# Fuente determinada del sistema
+# Dirección de la base de datos local
+path = 'resources/database/operadores.db'
+
+# Configuración de la fuente para los botones y etiquetas
 font = ("Helvetica", 12)
-path = 'src/operadores.db'
 
 
 class InterfazMain(tk.Tk):
