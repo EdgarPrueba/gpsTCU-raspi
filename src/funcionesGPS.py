@@ -2,6 +2,8 @@ import serial
 import requests
 import csv
 
+api_url = "https://api-tcu-ucr-default-rtdb.firebaseio.com/location.json"
+
 
 def guardar_csv(nombre_archivo, latitud, longitud):
     """Se guardan datos enviados por módulo GPS en un archivo csv.
@@ -93,9 +95,7 @@ def enviar_api(latitud_decimal, longitud_decimal):
         "longitude": longitud_decimal,
     }
 
-    # URL de la API
-    api_url = "https://api-tcu-ucr-default-rtdb.firebaseio.com/location.json"
-
+    # Se envía la solicitud PUT a la API
     try:
         # Enviar datos a la API
         response = requests.put(api_url, json=data)
@@ -123,9 +123,6 @@ def manejarGPS(stop_event):
     # Archivo de texto donde se guardarán los datos con append
     archivo_txt = 'gps_data.txt'
     archivo_csv = 'datos_gps.csv'
-
-    # Quitar el comentario para cuando se tenga el
-    # api_url = 'https://realtime.bucr.digital/api/position'
 
     # Se abre puerto serial
     ser = serial.Serial(port, baudrate, timeout=10)

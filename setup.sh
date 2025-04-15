@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Editar esta variable según sea interfaz del bus, de parada u otro.
+# Modificar a "true" si el setup es para la Raspberry Pi
+RPI=false
+
+# Editar esta variable según el nombre del script con la interfaz
 INTERFAZ="main.py"
 
 # Se usa el directorio donde se encuentra el script (gpsTCU)
@@ -25,6 +28,7 @@ if [ ! -d "$VENV_DIR" ]; then
     deactivate
 fi
 
+if [ "$RPI" = true ]; then
 # Se crea el script que ejecuta la interfaz.
 cat > "$SCRIPT" << EOF
 #!/bin/bash
@@ -46,5 +50,6 @@ Type=Application
 Name=Autostart interfaz de aplicación GPS TCU.
 Exec="$SCRIPT"
 EOF
+fi
 
 echo "Setup finalizado."

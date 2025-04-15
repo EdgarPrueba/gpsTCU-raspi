@@ -1,20 +1,26 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 import csv
-import random
 import time
 
-app = Flask(__name__)
+template_folder = 'resources/templates'
+template_name = 'map.html'
+datos_path = 'tests/map/datos_gps.csv'
+
+app = Flask(__name__, template_folder=template_folder)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route('/')
 def index():
-    return render_template('map.html')
+    return render_template(template_name)
 
 
 def send_gps_data():
-    with open('datos_gps.csv', 'r') as csvfile:
+    """Función para probar el envío de datos GPS a los clientes conectados.
+    Esta función simula el envío de datos GPS desde un archivo CSV.
+    """
+    with open(datos_path, 'r') as csvfile:
         content = csv.reader(csvfile)
 
         for row in content:
