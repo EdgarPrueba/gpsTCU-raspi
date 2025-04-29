@@ -12,13 +12,22 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route('/')
 def index():
+    """
+    Ruta principal que renderiza la plantilla del mapa.
+
+    :return: Plantilla HTML del mapa.
+    :rtype: flask.Response
+    """
     return render_template('map.html')
 
 
 def send_gps_data():
-    """Función para enviar datos GPS a los clientes conectados.
-    Esta función se ejecuta en segundo plano y envía datos GPS
-    a través de WebSocket.
+    """
+    Envía datos GPS a los clientes conectados a través de WebSocket.
+
+    Esta función se ejecuta en segundo plano y realiza solicitudes
+    periódicas a la API para obtener la ubicación actual, luego
+    transmite los datos a todos los clientes conectados.
     """
     while True:
         try:
@@ -43,6 +52,11 @@ def send_gps_data():
 
 @socketio.on('connect')
 def handle_connect():
+    """
+    Maneja el evento de conexión de un cliente al servidor WebSocket.
+
+    Imprime un mensaje en la consola indicando que un cliente se ha conectado.
+    """
     print("Cliente conectado")
 
 

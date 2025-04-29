@@ -10,12 +10,15 @@ font = ("Helvetica", 12)
 
 
 class InterfazMain(tk.Tk):
-    """Clase para la generación de la interfaz principal de
-    registro.
+    """
+    Clase para la generación de la interfaz principal de registro de
+    operadores.
 
+    La interfaz incluye campos de entrada para el ID del operador, nombre,
+    teléfono, email, nombre de usuario y contraseña, junto con un teclado
+    táctil virtual para facilitar el ingreso de datos.
 
-    :param tk: Clase para interfaces con Tkinter
-    :type tk: Objeto Tk
+    :param tk.Tk: Clase base para aplicaciones gráficas en Tkinter.
     """
 
     def __init__(self):
@@ -50,7 +53,8 @@ class InterfazMain(tk.Tk):
         self.create_widgets()
 
     def create_database(self):
-        """Se crea el objeto database en caso de no existir.
+        """
+        Crea la base de datos local de operadores si no existe.
         """
         conn = sqlite3.connect(path)
         cursor = conn.cursor()
@@ -68,7 +72,8 @@ class InterfazMain(tk.Tk):
         conn.close()
 
     def create_widgets(self):
-        """Crea los objetos de la interfaz de registro.
+        """
+        Crea los elementos de la interfaz gráfica de usuario (widgets).
         """
         # Hace que las columnas se expandan
         for i in range(4):
@@ -117,7 +122,11 @@ class InterfazMain(tk.Tk):
         self.success_label.grid(row=4, column=0, columnspan=4)
 
     def create_keyboard(self):
-        """Crear el teclado táctil en la pantalla de registro.
+        """
+        Simula el efecto de presionar una tecla del teclado virtual.
+
+        :param key: Tecla presionada.
+        :type key: str
         """
         keys = [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -189,22 +198,23 @@ class InterfazMain(tk.Tk):
 
     def verificarRegistro(self, operator_id, name,
                           phone, email, username, password):
-        """Se verifica la validez de los datos de registro.
+        """
+        Verifica la validez de los datos de registro ingresados.
 
-        :param operator_id: ID de operador ingresada.
-        :type operator_id: tk.StringVar
+        :param operator_id: ID de operador ingresado.
+        :type operator_id: str
         :param name: Nombre completo ingresado.
-        :type name: tk.StringVar
+        :type name: str
         :param phone: Número de teléfono ingresado.
-        :type phone: tk.StringVar
-        :param email: Email ingresado
-        :type email: tk.StringVar
-        :param username: Nombre de usuario ingresado
-        :type username: tk.StringVar
+        :type phone: str
+        :param email: Correo electrónico ingresado.
+        :type email: str
+        :param username: Nombre de usuario ingresado.
+        :type username: str
         :param password: Contraseña ingresada.
-        :type password: tk.StringVar
-        :raises ValueError: Si los datos ingresados no cumplen con
-                            los requisitos dados.
+        :type password: str
+        :raises ValueError: Si alguno de los campos no cumple
+        con los requisitos.
         """
         if not re.match("^[0-9]{1,9}$", operator_id):
             raise ValueError("ID inválido, debe ser numérico.")
@@ -233,7 +243,9 @@ class InterfazMain(tk.Tk):
                              "letras y números y tener al menos 4 de estos.")
 
     def register(self):
-        """Se realiza registro de datos ingresados, si estos son válidos.
+        """
+        Realiza el registro de datos del operador si la verificación es
+        exitosa.
         """
         operator_id = self.operator_id.get()
         name = self.name.get()
@@ -271,7 +283,8 @@ class InterfazMain(tk.Tk):
             conn.close()
 
     def on_closing(self):
-        """Finaliza el programa correctamente.
+        """
+        Cierra la aplicación de forma segura.
         """
         self.destroy()
 

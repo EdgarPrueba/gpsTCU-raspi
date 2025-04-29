@@ -7,14 +7,15 @@ api_url = "https://api-tcu-ucr-default-rtdb.firebaseio.com/location.json"
 
 
 def guardar_csv(nombre_archivo, latitud, longitud):
-    """Se guardan datos enviados por módulo GPS en un archivo csv.
+    """
+    Guarda datos enviados por el módulo GPS en un archivo CSV.
 
-    :param nombre_archivo: Nombre de archivo a escribir
-    :type nombre_archivo: string
-    :param latitud: Dato de latitud de posición
-    :type latitud: string
-    :param longitud: Dato de longitud de posición
-    :type longitud: string
+    :param nombre_archivo: Nombre del archivo donde se guardarán los datos.
+    :type nombre_archivo: str
+    :param latitud: Valor de latitud de la posición.
+    :type latitud: str
+    :param longitud: Valor de longitud de la posición.
+    :type longitud: str
     """
     # Modo 'a' para agregar datos sin sobrescribir
     with open(nombre_archivo, mode='a', newline='') as archivo_csv:
@@ -24,15 +25,16 @@ def guardar_csv(nombre_archivo, latitud, longitud):
 
 
 def guardar_txt(nombre_archivo, latitud, longitud, save_count):
-    """Se guardan datos enviados por módulo GPS en un archivo txt.
+    """
+    Guarda datos enviados por el módulo GPS en un archivo de texto.
 
-    :param nombre_archivo: Nombre de archivo a escribir
-    :type nombre_archivo: string
-    :param latitud: Dato de latitud de posición
-    :type latitud: string
-    :param longitud: Dato de longitud de posición
-    :type longitud: string
-    :param save_count: Número de cuenta
+    :param nombre_archivo: Nombre del archivo donde se guardarán los datos.
+    :type nombre_archivo: str
+    :param latitud: Valor de latitud de la posición.
+    :type latitud: str
+    :param longitud: Valor de longitud de la posición.
+    :type longitud: str
+    :param save_count: Número de registro guardado.
     :type save_count: int
     """
     # Modo 'a' para agregar datos sin sobrescribir
@@ -42,18 +44,19 @@ def guardar_txt(nombre_archivo, latitud, longitud, save_count):
 
 
 def conversion_latxlon(latitud, latitud_dir, longitud, longitud_dir):
-    """Se convierte la latitud y longitud de la forma en grados y minutos
-    a decimal, según hemisferio.
+    """
+    Convierte coordenadas de latitud y longitud de formato grados-minutos
+    a decimal.
 
-    :param latitud: Dato de latitud conjunta
-    :type latitud: string
-    :param latitud_dir: Hemisferio de dato de latitud
-    :type latitud_dir: string
-    :param longitud: Dato de longitud conjunta
-    :type longitud: string
-    :param longitud_dir: Hemisferio de dato de longitud
-    :type longitud_dir: string
-    :return: Latitud y longitud en decimal
+    :param latitud: Latitud en grados y minutos.
+    :type latitud: str
+    :param latitud_dir: Dirección de la latitud ('N' o 'S').
+    :type latitud_dir: str
+    :param longitud: Longitud en grados y minutos.
+    :type longitud: str
+    :param longitud_dir: Dirección de la longitud ('E' o 'W').
+    :type longitud_dir: str
+    :return: Latitud y longitud convertidas a formato decimal.
     :rtype: tuple
     """
     # Conversión de latitud (dos primeros dígitos son los grados)
@@ -113,9 +116,10 @@ def enviar_api(latitud_decimal, longitud_decimal):
 
 
 def manejarGPS(stop_event):
-    """Función que maneja el rastreo de ubicación con el módulo GPS.
+    """
+    Maneja el rastreo de ubicación utilizando el módulo GPS.
 
-    :param stop_event: Bandera para indicar cuando se debe detener el proceso
+    :param stop_event: Bandera que indica cuándo detener el rastreo.
     :type stop_event: threading.Event
     """
     # Configuración puerto serial
