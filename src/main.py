@@ -15,13 +15,25 @@ font = ("Helvetica", 12)
 
 
 class InterfazMain(tk.Tk):
-    """Clase para la generación de la interfaz principal.
+    """
+    Clase que genera la interfaz principal de inicio de sesión y control de viaje.
 
-    :param tk: Clase para interfaces con Tkinter
-    :type tk: Objeto Tk
+    Hereda de :class:`tkinter.Tk`.
+
+    Attributes
+    ----------
+    username : tk.StringVar
+        Variable para el nombre de usuario.
+    password : tk.StringVar
+        Variable para la contraseña.
+    gps_thread : threading.Thread
+        Hilo encargado de capturar datos GPS.
+    stop_event : threading.Event
+        Evento para controlar la detención del hilo GPS.
     """
     def __init__(self):
-        """Función inicializadora de la interfaz principal.
+        """
+        Inicializa la ventana principal y sus componentes gráficos.
         """
         super().__init__()
 
@@ -47,9 +59,9 @@ class InterfazMain(tk.Tk):
         self.create_widgets()
 
     def create_widgets(self):
-        """Crea los objetos de las ventanas de inicio de sesión y
-        de control de viaje como lo son los botones y entradas de
-        credenciales.
+        """
+        Crea los elementos gráficos de la pantalla de inicio de sesión
+        y del control de viaje, incluyendo botones y campos de entrada.
         """
         # Crear un marco para el inicio de sesión
         self.login_frame = tk.Frame(self, bg="lightblue")
@@ -115,7 +127,8 @@ class InterfazMain(tk.Tk):
                  font=font, fg="green").pack(expand=True, pady=10)
 
     def create_keyboard(self):
-        """Crear el teclado táctil en la pantalla de inicio de sesión.
+        """
+        Crea un teclado táctil en la pantalla de inicio de sesión.
         """
 
         # Caracteres del teclado
@@ -170,10 +183,13 @@ class InterfazMain(tk.Tk):
                             padx=2, pady=2, sticky="we")
 
     def key_press(self, key):
-        """Simula el efecto de presionar la tecla seleccionada.
+        """
+        Simula el efecto de presionar una tecla en el teclado táctil.
 
-        :param key: Tecla presionada en teclado táctil.
-        :type key: tk.button
+        Parameters
+        ----------
+        key : str
+            Tecla presionada.
         """
 
         # Se detecta la ventana seleccionada
@@ -191,7 +207,8 @@ class InterfazMain(tk.Tk):
                 focused_widget.insert(tk.END, key)
 
     def verificar_operador(self, usuario, contraseña):
-        """Verifica las credenciales ingresadas para el inicio de sesión.
+        """
+        Verifica las credenciales ingresadas para el inicio de sesión.
         Se verifica con base de datos local "operadores.db". Se debe modificar
         una vez esté el servidor activo.
 
@@ -225,10 +242,11 @@ class InterfazMain(tk.Tk):
         return None
 
     def login(self):
-        """Se intenta el login con las credenciales ingresadas.
-        Se verifica con la API/base de datos local, si es correcto
-        se pasa a interfaz de control de viaje. Sino se muestra mensaje
-        de error.
+        """
+        Realiza el proceso de inicio de sesión verificando las credenciales.
+
+        Si es exitoso, envía los datos del operador a la API y muestra la
+        interfaz de control de viaje.
         """
         usuario = self.username.get()
         contraseña = self.password.get()
@@ -266,7 +284,8 @@ class InterfazMain(tk.Tk):
             self.keyboard_frame.pack_forget()
 
     def logout(self):
-        """Retorna a interfaz de login desde la interfaz de control de viaje.
+        """
+        Cierra sesión y regresa a la interfaz de inicio.
         Llama función para finalizar el viaje.
         """
         # Finalizar el viaje
@@ -278,7 +297,8 @@ class InterfazMain(tk.Tk):
         self.keyboard_frame.pack(expand=True, fill='both')
 
     def start_gps(self):
-        """Inicia la captura de datos por medio de función de
+        """
+        Inicia la captura de datos por medio de función de
         maejarGPS. Cambia el color de botones de control.
         """
 
@@ -329,7 +349,8 @@ class InterfazMain(tk.Tk):
             self.status_message.set("La lectura de GPS no está en ejecución.")
 
     def on_closing(self):
-        """Finaliza el programa correctamente.
+        """
+        Cierra la aplicación finalizando correctamente los procesos activos.
         """
         # Asegurarse de que el hilo de GPS se detenga antes de cerrar
         self.stop_gps()

@@ -17,11 +17,14 @@ app = Celery("tasks", broker="redis://localhost")
 # Configurar las tareas de Celery
 @app.task
 def test_task():
-    """ Función de prueba para Celery.
-    Esta función imprime un mensaje en la consola y retorna un string.
+    """
+    Función de prueba para Celery.
 
-    :return: _description_
-    :rtype: _type_
+    Esta función imprime un mensaje en la consola y retorna un string.
+    Está diseñada para probar que Celery está funcionando correctamente.
+
+    :return: Un mensaje indicando que la tarea se ejecutó.
+    :rtype: str
     """
     print("¡Hola mundo!")
     return "Listo"
@@ -29,10 +32,14 @@ def test_task():
 
 @app.task
 def schedule_task():
-    """ Función de rutina para Celery.
+    """
+    Función de rutina para Celery.
 
-    :return: _description_
-    :rtype: _type_
+    Esta tarea imprime un mensaje en la consola cada vez que se ejecuta.
+    Está programada para ejecutarse a intervalos regulares.
+
+    :return: Un mensaje indicando que la tarea se ejecutó.
+    :rtype: str
     """
     print("¡Hola mundo cada 60 minutos!")
 
@@ -46,11 +53,11 @@ def schedule_task():
 # Configurar el planificador de tareas de Celery
 app.conf.beat_schedule = {
     "test-schedule": {
-        "task": "tasks.test_task",
-        "schedule": timedelta(seconds=10),
+        "task": "tasks.test_task",  # Tarea a ejecutar
+        "schedule": timedelta(seconds=10),  # Intervalo de tiempo para ejecutar la tarea
     },
     "test-schedule-task": {
-        "task": "tasks.schedule_task",
-        "schedule": timedelta(seconds=60),
+        "task": "tasks.schedule_task",  # Tarea a ejecutar
+        "schedule": timedelta(seconds=60),  # Intervalo de tiempo para ejecutar la tarea
     },
 }
