@@ -39,6 +39,9 @@ def call_api(extension: str, data: dict, method: str):
         url = f'{url_base}/{extension}'
         header = {
             'Content-Type': 'application/json'
+
+            # Quitar cuando se implemente el token en la API.
+            # 'Authorization': 'Bearer ${token}'
         }
         mensaje = ''
         if method == 'GET':
