@@ -1,10 +1,12 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 import time
-from apiManager import get_data
+from apiManager import get_data, get_period
 
 app = Flask(__name__, template_folder='../resources/templates')
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+period = get_period()
 
 
 @app.route('/')
@@ -32,7 +34,7 @@ def send_gps_data():
         lat = data['latitude']
         lon = data['longitude']
         socketio.emit('gps_update', {'lat': lat, 'lon': lon})
-        time.sleep(1)
+        time.sleep(period)
 
 
 @socketio.on('connect')

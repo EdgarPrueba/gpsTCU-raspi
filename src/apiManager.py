@@ -6,6 +6,7 @@ config.read('pipeline.cfg')
 url_base = config['api']['url']
 token = config['api']['token']
 db_path = config['db']['path']
+period = config['scheduler']['period']
 
 
 def get_db():
@@ -15,6 +16,15 @@ def get_db():
     :rtype: str
     """
     return db_path
+
+
+def get_period():
+    """ Retorna periodo de actualización de datos.
+
+    :return: Periodo en segundos para procesos de actualización de datos.
+    :rtype: float
+    """
+    return float(period)
 
 
 def call_api(extension: str, data: dict, method: str):

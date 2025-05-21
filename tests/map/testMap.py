@@ -28,7 +28,7 @@ def send_gps_data():
                 "longitude": lon,
             }
             apiManager.put_data('location.json', data)
-            time.sleep(1)  # Enviar cada 1s
+            time.sleep(apiManager.get_period())
 
 
 if __name__ == "__main__":

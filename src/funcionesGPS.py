@@ -1,6 +1,7 @@
 import serial
 import csv
-from apiManager import put_data
+import time
+from apiManager import put_data, get_period
 
 
 def guardar_csv(nombre_archivo, latitud, longitud):
@@ -98,6 +99,7 @@ def enviar_api(latitud_decimal, longitud_decimal):
 
     # Se envía la solicitud PUT a la API
     put_data('location.json', data)
+    time.sleep(get_period())
 
 
 def manejarGPS(stop_event):
