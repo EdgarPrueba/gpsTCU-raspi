@@ -1,28 +1,63 @@
 import tkinter as tk
 import sqlite3
 import re
+from apiManager import get_db
 
-# Fuente determinada del sistema
+db_path = get_db()
+
+
 font = ("Helvetica", 12)
 
 
-class funcRegistro:
-    """Clase para generación de interfaz de registro.
+class InterfazMain(tk.Tk):
+    """
+    Clase para la generación de la interfaz principal de registro de
+    operadores.
+
+    La interfaz incluye campos de entrada para el ID del operador, nombre,
+    teléfono, email, nombre de usuario y contraseña, junto con un teclado
+    táctil virtual para facilitar el ingreso de datos.
+
+    :param tk.Tk: Clase base para aplicaciones gráficas en Tkinter.
     """
 
     def __init__(self):
-        """Inicializador vacío.
+        """Función inicializadora de la interfaz principal.
         """
-        pass
+        super().__init__()
+
+        # Inicia en fullscreen, para salir se usa Esc
+        self.attributes("-fullscreen", True)
+        self.bind("<Escape>", lambda event:
+                  self.attributes("-fullscreen", False))
+
+        self.title("REGISTRO DE USUARIO")
+
+        # Ajustar a las dimensiones de la pantalla táctil
+        self.geometry("800x480")
+
+        self.configure(bg="lightblue")  # Fondo de color azul claro
+
+        # Variables para los campos de entrada
+        self.operator_id = tk.StringVar()
+        self.name = tk.StringVar()
+        self.phone = tk.StringVar()
+        self.email = tk.StringVar()
+        self.username = tk.StringVar()
+        self.password = tk.StringVar()
+        self.message = tk.StringVar()  # Variable para el mensaje de registro
+
+        self.gps_thread = None
+
+        self.create_database()
+        self.create_widgets()
 
     def create_database(self):
-        """Se crea el objeto database en caso de no existir.
         """
-
-        # Conectar a la base de datos (se crea si no existe)
-        conn = sqlite3.connect("src/operadores.db")
+        Crea la base de datos local de operadores si no existe.
+        """
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        # Crear tabla si no existe
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS operadores (
                 operator_id TEXT PRIMARY KEY,
@@ -36,139 +71,48 @@ class funcRegistro:
         conn.commit()
         conn.close()
 
-    def verificarRegistro(self, operator_id, name,
-                          phone, email, username, password):
-        """Se verifica la validez de los datos de registro.
-
-        :param operator_id: ID de operador ingresada.
-        :type operator_id: tk.StringVar
-        :param name: Nombre completo ingresado.
-        :type name: tk.StringVar
-        :param phone: Número de teléfono ingresado.
-        :type phone: tk.StringVar
-        :param email: Email ingresado
-        :type email: tk.StringVar
-        :param username: Nombre de usuario ingresado
-        :type username: tk.StringVar
-        :param password: Contraseña ingresada.
-        :type password: tk.StringVar
-        :raises ValueError: Si los datos ingresados no cumplen con
-                            los requisitos dados.
-        """
-
-        if not re.match("^[0-9]{1,8}$", operator_id):
-            raise ValueError("ID inválido, debe ser "
-                             "numérico.")
-
-        if not re.match("^[0-9]{8}$", phone):
-            raise ValueError("Número de teléfono inválido,"
-                             " deben ser 8 números.")
-
-        email_pattern = re.compile(
-            r"^[a-zA-Z0-9_.+-]+@"      # Parte local del email
-            r"[a-zA-Z0-9-]+\."         # Nombre del dominio
-            r"[a-zA-Z0-9-.]+$"         # Extensión
-        )
-
-        if not re.match(email_pattern, email):
-            raise ValueError("Correo electrónico inválido.")
-
-        if not re.match("^[a-zA-Z0-9]{1,10}$", username):
-            raise ValueError("Username inválido debe ser "
-                             "menos de 10 letras o números.")
-
-        if not re.match("^[a-zA-Z0-9]{1,10}$", username):
-            raise ValueError("Username inválido debe ser "
-                             "menos de 10 letras o números.")
-
-        if not re.match("^[a-zA-Z\\s]{1,20}$", name):
-            raise ValueError("Nombre inválido debe ser "
-                             "letras o espacios y menos de 20 caracteres.")
-
-        if not re.match("^[a-zA-Z0-9]{4,20}$", password):
-            raise ValueError("Contraseña incorrecta, debe contener solo "
-                             " letras y números y tener al menos 4 de estos.")
-
-
-class InterfazRegistro(tk.Toplevel, funcRegistro):
-    """Objeto que maneja interfaz de registro.
-
-    :param tk: Objeto de interfaces tk
-    :type tk: tk.Frame
-    :param funcRegistro: Clase con las funciones de registro.
-    :type funcRegistro: Clase funcRegistro
-    """
-    def __init__(self, main_app):
-        super().__init__()
-
-        # Se guarda una referencia a la interfaz de inicio de
-        # sesión
-        self.main_app = main_app
-
-        # Inicia en fullscreen, para salir se usa Esc
-        self.attributes("-fullscreen", True)
-        self.bind("<Escape>", lambda event:
-                  self.attributes("-fullscreen", False))
-
-        self.title("Registro de Operadores")
-
-        # Ajustar a las dimensiones de la pantalla táctil
-        self.geometry("800x480")
-
-        # Variables para los campos de entrada
-        self.operator_id = tk.StringVar()
-        self.name = tk.StringVar()
-        self.phone = tk.StringVar()
-        self.email = tk.StringVar()
-        self.username = tk.StringVar()
-        self.password = tk.StringVar()
-        self.message = tk.StringVar()  # Variable para el mensaje de registro
-
-        # Crear widgets de la interfaz
-        self.create_widgets()
-        self.keyboard_frame = None  # Inicializar el teclado
-
     def create_widgets(self):
+        """
+        Crea los elementos de la interfaz gráfica de usuario (widgets).
+        """
         # Hace que las columnas se expandan
         for i in range(4):
             self.grid_columnconfigure(i, weight=1)
 
         # Usar grid para colocar los campos en 3 columnas y 2 filas
-        tk.Label(self, text="ID del Operador:", font=font).grid(
-            row=0, column=0, padx=5, pady=7)
+        tk.Label(self, text="ID del Operador:", bg="yellow",
+                 font=font).grid(row=0, column=0, padx=5, pady=7)
         tk.Entry(self, textvariable=self.operator_id, font=font).grid(
             row=0, column=1, padx=5, pady=7)
 
-        tk.Label(self, text="Nombre y Apellido:", font=font).grid(
-            row=0, column=2, padx=5, pady=7)
+        tk.Label(self, text="Nombre y Apellido:",  bg="yellow",
+                 font=font).grid(row=0, column=2, padx=5, pady=7)
         tk.Entry(self, textvariable=self.name, font=font).grid(
             row=0, column=3, padx=5, pady=7)
 
-        tk.Label(self, text="Teléfono:", font=font).grid(
-            row=1, column=0, padx=5, pady=7)
+        tk.Label(self, text="Teléfono:", bg="yellow",
+                 font=font).grid(row=1, column=0, padx=5, pady=7)
         tk.Entry(self, textvariable=self.phone, font=font).grid(
             row=1, column=1, padx=5, pady=7)
 
-        tk.Label(self, text="Email:", font=font).grid(
-            row=1, column=2, padx=5, pady=7)
+        tk.Label(self, text="Email:", bg="yellow",
+                 font=font).grid(row=1, column=2, padx=5, pady=7)
         tk.Entry(self, textvariable=self.email, font=font).grid(
             row=1, column=3, padx=5, pady=7)
 
-        tk.Label(self, text="Nombre de usuario:", font=font).grid(
-            row=2, column=0, padx=5, pady=7)
+        tk.Label(self, text="Nombre de usuario:",  bg="yellow",
+                 font=font).grid(row=2, column=0, padx=5, pady=7)
         tk.Entry(self, textvariable=self.username, font=font).grid(
             row=2, column=1, padx=5, pady=7)
 
-        tk.Label(self, text="Contraseña:", font=font).grid(
-            row=2, column=2, padx=5, pady=7)
+        tk.Label(self, text="Contraseña:",  bg="yellow",
+                 font=font).grid(row=2, column=2, padx=5, pady=7)
         tk.Entry(self, textvariable=self.password, font=font,
                  show="*").grid(row=2, column=3, padx=5, pady=7)
 
-        tk.Button(self, text="Registrar", command=self.register,
-                  font=font).grid(row=3, column=1, columnspan=1, pady=10)
-
-        tk.Button(self, text="Volver", command=self.volver,
-                  font=font).grid(row=3, column=2, columnspan=1, pady=10)
+        tk.Button(self, text="Registrar", bg="lightgreen",
+                  fg="black", command=self.register,
+                  font=font).grid(row=3, column=0, columnspan=4, pady=10)
 
         self.create_keyboard()
 
@@ -178,9 +122,12 @@ class InterfazRegistro(tk.Toplevel, funcRegistro):
         self.success_label.grid(row=4, column=0, columnspan=4)
 
     def create_keyboard(self):
-        """Crear el teclado táctil en la pantalla de inicio de registro.
         """
+        Simula el efecto de presionar una tecla del teclado virtual.
 
+        :param key: Tecla presionada.
+        :type key: str
+        """
         keys = [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
             'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
@@ -192,15 +139,35 @@ class InterfazRegistro(tk.Toplevel, funcRegistro):
         total_columns = 10
 
         # Posiciona el teclado debajo de los campos
-        self.keyboard_frame = tk.Frame(self)
+        # Añadir color de fondo al marco
+        self.keyboard_frame = tk.Frame(self, bg="lightblue")
         self.keyboard_frame.grid(row=5, column=0, columnspan=4, pady=20)
 
         # Se dimensiona de forma distinta la tecla según
         # si es caracter, espacio o tecla de borrado.
         for key in keys:
-            button = tk.Button(self.keyboard_frame, text=key,
-                               width=5, font=font,
-                               command=lambda k=key: self.key_press(k))
+            # Colores predeterminados
+            if key == 'ESPACIO':
+                bg_color = "lightgray"
+                fg_color = "black"
+            elif key == 'BORRAR':
+                bg_color = "red"
+                fg_color = "white"
+            else:
+                bg_color = "black"
+                fg_color = "white"
+
+            # Crear el botón con los colores aplicados
+            button = tk.Button(
+                self.keyboard_frame,
+                text=key,
+                width=5,
+                font=font,
+                bg=bg_color,  # Color de fondo
+                fg=fg_color,  # Color del texto
+                command=lambda k=key: self.key_press(k)
+            )
+
             row, col = divmod(keys.index(key), 10)
 
             if key == 'BORRAR':
@@ -208,36 +175,78 @@ class InterfazRegistro(tk.Toplevel, funcRegistro):
                 button.config(width=10)
             elif key == "ESPACIO":
                 space_row = len(keys) // total_columns
-                button.grid(row=space_row, column=0,
-                            columnspan=8, sticky="we")
+                button.grid(row=space_row, column=0, columnspan=8, sticky="we")
             else:
                 button.grid(row=row, column=col)
 
-    def key_press(self, key):
-        """Simula el efecto de presionar la tecla seleccionada.
+        def key_press(self, key):
+            """Simula el efecto de presionar la tecla seleccionada.
 
-        :param key: Tecla presionada en teclado táctil.
-        :type key: tk.button
+            :param key: Tecla presionada en teclado táctil.
+            :type key: tk.button
+            """
+            focused_widget = self.focus_get()
+            if isinstance(focused_widget, tk.Entry):
+                if key == "BORRAR":
+                    current_text = focused_widget.get()
+                    focused_widget.delete(0, tk.END)
+                    focused_widget.insert(0, current_text[:-1])
+                elif key == "ESPACIO":
+                    focused_widget.insert(tk.END, " ")
+                else:
+                    focused_widget.insert(tk.END, key)
+
+    def verificarRegistro(self, operator_id, name,
+                          phone, email, username, password):
         """
+        Verifica la validez de los datos de registro ingresados.
 
-        # Se detecta la ventana seleccionada
-        focused_widget = self.focus_get()
+        :param operator_id: ID de operador ingresado.
+        :type operator_id: str
+        :param name: Nombre completo ingresado.
+        :type name: str
+        :param phone: Número de teléfono ingresado.
+        :type phone: str
+        :param email: Correo electrónico ingresado.
+        :type email: str
+        :param username: Nombre de usuario ingresado.
+        :type username: str
+        :param password: Contraseña ingresada.
+        :type password: str
+        :raises ValueError: Si alguno de los campos no cumple
+        con los requisitos.
+        """
+        if not re.match("^[0-9]{1,9}$", operator_id):
+            raise ValueError("ID inválido, debe ser numérico.")
 
-        # Se genera el comportamiento correspondiente a la tecla.
-        if isinstance(focused_widget, tk.Entry):
-            if key == "BORRAR":
-                current_text = focused_widget.get()
-                focused_widget.delete(0, tk.END)
-                focused_widget.insert(0, current_text[:-1])
-            elif key == "ESPACIO":
-                focused_widget.insert(tk.END, " ")
-            else:
-                focused_widget.insert(tk.END, key)
+        if not re.match("^[0-9]{8}$", phone):
+            raise ValueError(
+                "Número de teléfono inválido, deben ser 8 números."
+                )
+
+        email_pattern = re.compile(
+            r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+        if not re.match(email_pattern, email):
+            raise ValueError("Correo electrónico inválido.")
+
+        if not re.match("^[a-zA-Z0-9]{1,10}$", username):
+            raise ValueError(
+                "Username inválido debe ser menos de 10 letras o números."
+                )
+
+        if not re.match("^[a-zA-Z\\s]{1,20}$", name):
+            raise ValueError("Nombre inválido debe ser letras"
+                             "o espacios y menos de 20 caracteres.")
+
+        if not re.match("^[a-zA-Z0-9]{4,20}$", password):
+            raise ValueError("Contraseña incorrecta, debe contener solo"
+                             "letras y números y tener al menos 4 de estos.")
 
     def register(self):
-        """Se realiza registro de datos ingresados, si estos son válidos.
         """
-        # Obtener los datos de los campos
+        Realiza el registro de datos del operador si la verificación es
+        exitosa.
+        """
         operator_id = self.operator_id.get()
         name = self.name.get()
         phone = self.phone.get()
@@ -245,19 +254,18 @@ class InterfazRegistro(tk.Toplevel, funcRegistro):
         username = self.username.get()
         password = self.password.get()
 
-        # Guardar en la base de datos
-        conn = sqlite3.connect("src/operadores.db")
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         try:
             self.verificarRegistro(operator_id, name, phone,
                                    email, username, password)
             cursor.execute('''
-                INSERT INTO operadores (operator_id, name, \
-                           phone, email, username, password)
+                INSERT INTO operadores (operator_id, name, phone, email,
+                username, password)
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (operator_id, name, phone, email, username, password))
             conn.commit()
-            self.message.set("Registro exitoso.")  # Actualizar el mensaje
+            self.message.set("Registro exitoso.")
 
             # Limpiar campos después del registro
             self.operator_id.set("")
@@ -268,22 +276,20 @@ class InterfazRegistro(tk.Toplevel, funcRegistro):
             self.password.set("")
 
         except sqlite3.IntegrityError:
-            # Mensaje de error
             self.message.set("Error: ID del operador ya existe.")
-
-        # Mensaje de error cuando los datos a registrar no son apropiados.
         except ValueError as e:
             self.message.set(str(e))
-
         finally:
             conn.close()
 
-    def volver(self):
-        """Retorna a interfaz de inicio de sesión.
+    def on_closing(self):
         """
-        self.destroy()  # Close the registration window
-        self.main_app.return_to_main()
+        Cierra la aplicación de forma segura.
+        """
+        self.destroy()
 
 
 if __name__ == "__main__":
-    pass
+    app = InterfazMain()
+    app.protocol("WM_DELETE_WINDOW", app.on_closing)
+    app.mainloop()
