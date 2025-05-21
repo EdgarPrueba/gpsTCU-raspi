@@ -99,20 +99,6 @@ def enviar_api(latitud_decimal, longitud_decimal):
     # Se envía la solicitud PUT a la API
     put_data('location.json', data)
 
-    # try:
-    #     # Enviar datos a la API
-    #     response = requests.put(api_url, json=data)
-    #     if response.status_code == 200:
-    #         print(
-    #             f"Datos enviados correctamente a la API. Latitud: "
-    #             f"{latitud_decimal}, Longitud: {longitud_decimal}")
-    #     else:
-    #         print(
-    #             f"Error al enviar los datos a la API. Código de estado:"
-    #             f"{response.status_code}")
-    # except requests.exceptions.RequestException as e:
-    #     print(f"Error de conexión al intentar enviar los datos: {e}")
-
 
 def manejarGPS(stop_event):
     """

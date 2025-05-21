@@ -4,6 +4,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read('pipeline.cfg')
 url_base = config['api']['url']
+token = config['api']['token']
 db_path = config['db']['path']
 
 
