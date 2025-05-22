@@ -2,8 +2,13 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO
 import time
 from apiManager import get_data, get_period
+import os
 
-app = Flask(__name__, template_folder='../resources/templates')
+
+template_dir = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..', 'resources', 'templates'))
+app = Flask(__name__, template_folder=template_dir)
+
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 period = get_period()
