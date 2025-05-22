@@ -1,8 +1,11 @@
+from flask import Config
 import requests
 import configparser
+import os
+config_path = os.path.join(os.path.dirname(__file__), '..', 'pipeline.cfg')
+Config.read(config_path)
 
 config = configparser.ConfigParser()
-config.read('pipeline.cfg')
 url_base = config['api']['url']
 token = config['api']['token']
 db_path = config['db']['path']
