@@ -3,18 +3,12 @@ import requests
 import configparser
 import os
 
-# Crear instancia del parser
-config = configparser.ConfigParser()
-# Leer archivo de configuración desde la ruta relativa
-config_path = os.path.join(os.path.dirname(__file__), '..', 'pipeline.cfg')
-config.read(config_path)
+import os
 
-
-config = configparser.ConfigParser()
-url_base = config['api']['url']
-token = config['api']['token']
-db_path = config['db']['path']
-period = config['scheduler']['period']
+url_base = os.getenv('API_URL')
+token = os.getenv('API_TOKEN', '')
+db_path = os.getenv('DB_PATH', 'resources/database/pipeline.db')
+period = float(os.getenv('SCHEDULER_PERIOD', '1'))
 
 
 def get_db():
