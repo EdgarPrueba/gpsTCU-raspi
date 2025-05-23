@@ -2,8 +2,13 @@ from flask import Config
 import requests
 import configparser
 import os
+
+# Crear instancia del parser
+config = configparser.ConfigParser()
+# Leer archivo de configuración desde la ruta relativa
 config_path = os.path.join(os.path.dirname(__file__), '..', 'pipeline.cfg')
-Config.read(config_path)
+config.read(config_path)
+
 
 config = configparser.ConfigParser()
 url_base = config['api']['url']
