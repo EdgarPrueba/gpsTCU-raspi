@@ -52,7 +52,7 @@
 
         var route = L.polyline([], {color: 'red'}).addTo(map);
         
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var socket = io.connect('http://gpstcu-raspi.onrender.com');
         socket.on('gps_update', function(data) {
             var newPos = [data.lat, data.lon];
             marker.setLatLng(newPos);
